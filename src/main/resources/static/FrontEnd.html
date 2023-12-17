@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital Management System</title>
+    <style>
+        /* CSS styles for the table */
+        /* Feel free to adjust styles as needed */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Hospital Management System - Patient List</h1>
+
+<table id="patientsTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Sex</th>
+        <th>Covid Status</th>
+        <th>Is Admit</th>
+    </tr>
+    </thead>
+    <tbody id="tableBody">
+    <!-- Table body will be populated dynamically -->
+    </tbody>
+</table>
+
+<script>
+    // JavaScript to fetch and display patient data
+    fetch('/fetch-data')
+        .then(response => response.json())
+        .then(data => {
+            const tableBody = document.getElementById('tableBody');
+            data.forEach(patient => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                        <td>${patient.id}</td>
+                        <td>${patient.name}</td>
+                        <td>${patient.age}</td>
+                        <td>${patient.sex}</td>
+                        <td>${patient.covidStatus}</td>
+                        <td>${patient.isAdmit}</td>
+                    `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+</script>
+
+</body>
+</html>

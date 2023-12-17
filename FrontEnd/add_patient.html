@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Patient</title>
+    <style>
+        /* CSS styles for the form */
+        /* Feel free to adjust styles as needed */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label, input, select {
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Patient</h1>
+
+    <form id="addPatientForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required>
+
+        <fieldset>
+            <legend>Sex:</legend>
+            <input type="radio" id="male" name="sex" value="male" required>
+            <label for="male">Male</label>
+            <input type="radio" id="female" name="sex" value="female" required>
+            <label for="female">Female</label>
+            <input type="radio" id="nonBinary" name="sex" value="non-binary" required>
+            <label for="nonBinary">Non-Binary</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Covid Status:</legend>
+            <input type="radio" id="positive" name="covidStatus" value="Positive" required>
+            <label for="positive">Positive</label>
+            <input type="radio" id="negative" name="covidStatus" value="Negative" required>
+            <label for="negative">Negative</label>
+        </fieldset>
+
+        <fieldset>
+            <legend>Is Admit:</legend>
+            <input type="radio" id="yes" name="isAdmit" value="Yes" required>
+            <label for="yes">Yes</label>
+            <input type="radio" id="no" name="isAdmit" value="No" required>
+            <label for="no">No</label>
+        </fieldset>
+
+        <input type="submit" value="Add Patient">
+    </form>
+
+    <script>
+        document.getElementById('addPatientForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+            const patientData = {};
+            formData.forEach((value, key) => {
+                patientData[key] = value;
+            });
+
+            fetch('http://localhost:8080/addPatient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(patientData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Patient added successfully!');
+                    // Redirect to fetch-data page after adding patient
+                    window.location.href = 'index.html'; // Change this to your fetch-data page
+                } else {
+                    throw new Error('Failed to add patient');
+                }
+            })
+            .catch(error => console.error('Error adding patient:', error));
+        });
+    </script>
+</body>
+</html>
